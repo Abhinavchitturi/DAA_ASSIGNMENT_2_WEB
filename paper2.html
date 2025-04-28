@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreExact Method</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #8b0000);
+            color: white;
+            text-align: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .main-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 15px rgba(255, 0, 0, 0.5);
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 15px rgba(255, 0, 0, 0.5);
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        li {
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+        .output-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .output-table th,
+        .output-table td {
+            border: 1px solid #8b0000;
+            padding: 8px;
+            text-align: center;
+        }
+        .output-table th {
+            background-color: #8b0000;
+            color: white;
+            font-weight: bold;
+        }
+        .output-table tr:nth-child(odd) {
+            background-color: #1a1a1a;
+        }
+        .output-table tr:nth-child(even) {
+            background-color: #2a0a0a;
+        }
+        .output-table tr:hover {
+            background-color: #ff4d4d;
+            color: white;
+        }
+        .back-btn {
+            border: none;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #ff0000, #8b0000);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #ff4d4d, #b30000);
+            box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.3);
+        }
+        img {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>The CoreExact Method</h1>
+        
+        <div>
+            <h2>Summary</h2>
+            <p className = "summary">
+                The paper "Efficient Algorithms for Densest Subgraph Discovery" by Yixiang Fang et al. introduces 
+                CoreExact, an optimized exact algorithm for densest subgraph discovery (DSD). The key innovation 
+                is leveraging k-clique-cores (generalized k-cores) to significantly reduce the search space and 
+                improve the efficiency of traditional maximum flow-based methods.
+            </p>
+            <p>
+                Unlike the classical Exact algorithm, which builds flow networks over the entire graph in each 
+                iteration, CoreExact first locates the densest subgraph within smaller (k, Ψ)-cores, where Ψ is an 
+                h-clique. By exploiting properties such as core "nesting" and tight density bounds, CoreExact 
+                minimizes unnecessary computations.
+            </p>
+            <p>
+                At each step, CoreExact constructs smaller flow networks, reducing the overhead of minimum s-t 
+                cut computations. This leads to substantial performance improvements, especially for large graphs 
+                or higher-order cliques.
+            </p>
+        </div>
+        
+        <div>
+            <h2>Pseudocode</h2>
+            <img src="2nd.png" alt="Pseudocode Image 1">
+        </div>
+        
+        <div>
+            <h2>Observation</h2>
+            <table class="output-table">
+                <thead>
+                    <tr>
+                        <th>Metrics</th>
+                        <th>2-clique Popt</th>
+                        <th>3-clique Popt</th>
+                        <th>4-clique Popt</th>
+                        <th>5-clique Popt</th>
+                        <th>6-clique Popt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>NetScience</td>
+                        <td>9.40</td>
+                        <td>57</td>
+                        <td>242.2</td>
+                        <td>770.3</td>
+                        <td>NIL</td>
+                    </tr>
+                    <tr>
+                        <td>AS-733</td>
+                        <td>8.12</td>
+                        <td>32</td>
+                        <td>65.33</td>
+                        <td>91.22</td>
+                        <td>NIL</td>
+                    </tr>
+                    <tr>
+                        <td>CA-HepTh</td>
+                        <td></td>
+                        <td>155</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Yeast</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div>
+            <h2>Time Complexity</h2>
+            <p>The time complexity of <strong>CoreExact</strong> can be approximated as:</p>
+            <p>
+                $$
+                O\left( n \cdot \binom{d-1}{h-1} + \sum \text{Flow(Network size per iteration)} \right)
+                $$
+            </p>
+        
+            <p>
+                Where:
+            </p>
+            <ul>
+                <li><strong>n</strong> is the number of vertices</li>
+                <li><strong>d</strong> is the maximum degree in the graph</li>
+                <li><strong>\( \binom{d-1}{h-1} \)</strong> represents the binomial coefficient for clique enumeration</li>
+                <li><strong>\( \sum \text{Flow(Network size per iteration)} \)</strong> accounts for the cumulative cost of flow computations on progressively smaller cores</li>
+            </ul>        
+        </div>
+
+        <button class="back-btn" onclick="window.location.href='index.html'">Go Back</button>
+    </div>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
